@@ -62,20 +62,21 @@ class Component:
     def check_num_jets(
         self, num_req, sampling_frac=None, cuts=None, silent=False, raise_error=True
     ):
-        # Check if num_jets jets are aviailable after the cuts and sampling fraction
+        # Check if num_jetsjets are aviailable after the cuts and sampling fraction
         total = self.reader.estimate_available_jets(cuts, self.num_jets_estimate)
         available = total
         if sampling_frac:
             available = int(total * sampling_frac)
 
+        # N.B.: commented out to retrieved a fixed amount of jets
         # check with tolerance to avoid failure midway through preprocessing
-        if available < num_req and raise_error:
-            raise ValueError(
-                f"{num_req:,} jets requested, but only {total:,} are estimated to be"
-                f" in {self}. With a sampling fraction of {sampling_frac}, at most"
-                f" {available:,} of these are available. You can either reduce the"
-                " number of requested jets or increase the sampling fraction."
-            )
+        # if available < num_req and raise_error:
+        #     raise ValueError(
+        #         f"{num_req:,} jets requested, but only {total:,} are estimated to be"
+        #         f" in {self}. With a sampling fraction of {sampling_frac}, at most"
+        #         f" {available:,} of these are available. You can either reduce the"
+        #         " number of requested jets or increase the sampling fraction."
+        #     )
 
         if not silent:
             log.debug(f"Sampling fraction {sampling_frac}")

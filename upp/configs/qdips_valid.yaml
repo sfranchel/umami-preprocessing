@@ -1,0 +1,67 @@
+ttbar: &ttbar
+  name: ttbar
+  pattern: valid_data.h5
+
+global_cuts:
+  train:
+    - [pt, ">", 0]
+  val:
+    - [pt, "==", 0]
+  test:
+    - [pt, "==", 0]
+
+lowpt: &lowpt
+  name: lowpt
+  cuts:
+    - [pt, ">", 0]
+
+components:
+  - region:
+      <<: *lowpt
+    sample:
+      <<: *ttbar
+    flavours: [bjets, cjets, ujets]
+    num_jets: 60_000
+
+
+resampling:
+  target: cjets
+  method: none
+  sampling_fraction: 1.0
+  variables:
+    pt:
+      bins: [[20, 200, 60]]
+    eta:
+      bins: [[-2.5, 2.5, 10]]
+
+global:
+  batch_size: 5_000
+  num_jets_estimate: 181181
+  base_dir: /home/sfx/Desktop/ATLAS/qdips/upp
+  out_dir: preprocessed_valid
+  ntuple_dir: ../samples
+
+variables:
+  jets:
+    inputs:
+      - pt
+      - eta
+    labels:
+      - HadronConeExclTruthLabelID
+
+  tracks:
+    inputs:
+      - pt
+      - eta
+      - phi
+      - d0
+      - d0err
+      - z0
+      - z0err
+      - ctgtheta
+      - ctgthetaerr
+      - d0_significance
+      - z0_significance
+      - deta
+      - dphi
+      - dr
